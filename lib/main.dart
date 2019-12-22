@@ -422,6 +422,47 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
+                ),Visibility(
+                  visible: (download.status != UpdateStatus.DOWNLOADING &&
+                      download.status != UpdateStatus.DOWNLOADED &&
+                      download.status != UpdateStatus.STARTING &&
+                      download.status != UpdateStatus.VERIFYING &&
+                      download.status != UpdateStatus.VERIFIED &&
+                      download.status != UpdateStatus.INSTALLING &&
+                      download.status != UpdateStatus.INSTALLED &&
+                      download.status != UpdateStatus.PAUSED) &&
+                      download.notes != "",
+                  child: GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.info_outline),
+                    ),
+                    onTap: () async {
+                      final buttonTextColor =
+                          HSLColor.fromColor(Theme.of(context).accentColor)
+                              .withLightness(0.4)
+                              .toColor();
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Notes for release"),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: _kBorderRadius,
+                            ),
+                            content: Text(download.notes),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text(
+                                  "Close",
+                                  style: TextStyle(color: buttonTextColor),
+                                ),
+                                onPressed: () => Navigator.of(context).pop()
+                              ),
+                            ],
+                          ),
+                        );
+                    },
+                  ),
                 ),
                 Visibility(
                   visible: download.status != UpdateStatus.DOWNLOADING &&
@@ -649,9 +690,9 @@ class HomeScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.fastfood),
                       onPressed: () => AndroidFlutterUpdater.startActivity(
-                        pkg: 'com.android.settings',
+                        pkg: 'com.potatoproject.fries',
                         cls:
-                            'com.android.settings.Settings\$FriesDashboardActivity',
+                            'com.potatoproject.fries.TopLevelSettingsActivity',
                       ),
                     ),
                     Spacer(),
