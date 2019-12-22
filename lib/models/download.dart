@@ -10,6 +10,7 @@ class DownloadModel {
   String name = '';
   String version = '';
   String timestamp = '';
+  String notes = '';
   int downloadProgress = 0;
   UpdateStatus status = UpdateStatus.UNKNOWN;
   int persistentStatus = 0;
@@ -28,6 +29,7 @@ class DownloadModel {
     name = await AndroidFlutterUpdater.getName(id);
     version = await AndroidFlutterUpdater.getVersion(id);
     timestamp = await AndroidFlutterUpdater.getTimestamp(id);
+    notes = await AndroidFlutterUpdater.getNotes(id);
     downloadProgress = await AndroidFlutterUpdater.getDownloadProgress(id);
     status = await AndroidFlutterUpdater.getStatus(id);
     persistentStatus = await AndroidFlutterUpdater.getPersistentStatus(id);
@@ -102,6 +104,11 @@ class DownloadModel {
 
   Future<void> getTimestamp() async {
     timestamp = await AndroidFlutterUpdater.getTimestamp(id);
+    notifyListenersCb();
+  }
+
+  Future<void> getNotes() async {
+    notes = await AndroidFlutterUpdater.getNotes(id);
     notifyListenersCb();
   }
 

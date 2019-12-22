@@ -52,28 +52,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-
-
-    flavorDimensions "mode"
-    productFlavors {
-        lite {
-            dimension "mode"
-        }
-        full {
-            dimension "mode"
-        }
-    }
-
-    soexcluder {
-        lite {
-            exclude 'lib/arm64-v8a/*.so'
-            exclude 'lib/armeabi-v7a/*.so'
-        }
-        full {
-            include 'lib/arm64-v8a/*.so'
-            include 'lib/armeabi-v7a/*.so'
-        }
-    }
 }
 
 flutter {
