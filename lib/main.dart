@@ -1,5 +1,6 @@
 import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:potato_center/internal/methods.dart';
 import 'package:potato_center/models/download.dart';
@@ -117,8 +118,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           floatingActionButton: _floatingActionButton,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           bottomNavigationBar: _bottomAppBar,
         ),
         Visibility(
@@ -422,15 +422,16 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
-                ),Visibility(
+                ),
+                Visibility(
                   visible: (download.status != UpdateStatus.DOWNLOADING &&
-                      download.status != UpdateStatus.DOWNLOADED &&
-                      download.status != UpdateStatus.STARTING &&
-                      download.status != UpdateStatus.VERIFYING &&
-                      download.status != UpdateStatus.VERIFIED &&
-                      download.status != UpdateStatus.INSTALLING &&
-                      download.status != UpdateStatus.INSTALLED &&
-                      download.status != UpdateStatus.PAUSED) &&
+                          download.status != UpdateStatus.DOWNLOADED &&
+                          download.status != UpdateStatus.STARTING &&
+                          download.status != UpdateStatus.VERIFYING &&
+                          download.status != UpdateStatus.VERIFIED &&
+                          download.status != UpdateStatus.INSTALLING &&
+                          download.status != UpdateStatus.INSTALLED &&
+                          download.status != UpdateStatus.PAUSED) &&
                       download.notes != "",
                   child: GestureDetector(
                     child: Padding(
@@ -443,24 +444,23 @@ class HomeScreen extends StatelessWidget {
                               .withLightness(0.4)
                               .toColor();
                       showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text("Notes for release"),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: _kBorderRadius,
-                            ),
-                            content: Text(download.notes),
-                            actions: <Widget>[
-                              FlatButton(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Notes for release"),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: _kBorderRadius,
+                          ),
+                          content: Text(download.notes),
+                          actions: <Widget>[
+                            FlatButton(
                                 child: Text(
                                   "Close",
                                   style: TextStyle(color: buttonTextColor),
                                 ),
-                                onPressed: () => Navigator.of(context).pop()
-                              ),
-                            ],
-                          ),
-                        );
+                                onPressed: () => Navigator.of(context).pop()),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -620,14 +620,10 @@ class HomeScreen extends StatelessWidget {
   Widget get _floatingActionButton => Builder(
         builder: (context) => FloatingActionButton(
           elevation: 0,
-          backgroundColor: HSLColor.fromColor(Theme.of(context).accentColor)
-              .withLightness(0.85)
-              .toColor(),
+          backgroundColor: Theme.of(context).accentColor,
           child: Icon(
             Icons.refresh,
-            color: HSLColor.fromColor(Theme.of(context).accentColor)
-                .withLightness(0.4)
-                .toColor(),
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           onPressed: () async =>
               await Provider.of<DownloadProvider>(context).loadData(),
@@ -668,7 +664,55 @@ class HomeScreen extends StatelessWidget {
         },
       );
 
-  Widget get _bottomAppBar => ClipRRect(
+  Widget get _bottomAppBar => Builder(builder: (context) {
+        final sheetData = Provider.of<SheetDataProvider>(context);
+
+        return Container(
+          height: 60,
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+              color: Theme.of(context).bottomAppBarColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 2,
+                  offset: Offset(0, -0.1),
+                  spreadRadius: 2,
+                )
+              ]),
+          child: Material(
+            color: Colors.transparent,
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    if (!sheetData.isHandleVisible)
+                      sheetData.isHandleVisible = true;
+
+                    showModalBottomSheetApp(
+                      dismissOnTap: false,
+                      context: context,
+                      builder: (context) => BottomSheetContents(),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: Icon(MdiIcons.accountGroupOutline),
+                  onPressed: () => launchUrl("https://potatoproject.co/team"),
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+
+  /*Widget get _bottomAppBar => ClipRRect(
         borderRadius: BorderRadius.only(
           topLeft: _kBorderRadius.topLeft,
           topRight: _kBorderRadius.topRight,
@@ -762,5 +806,5 @@ class HomeScreen extends StatelessWidget {
             );
           },
         ),
-      );
+      );*/
 }
