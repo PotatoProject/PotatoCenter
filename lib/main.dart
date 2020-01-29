@@ -11,6 +11,7 @@ import 'package:potato_center/ui/bottom_sheet.dart';
 import 'package:potato_center/ui/custom_bottom_sheet.dart';
 import 'package:potato_center/ui/custom_icons.dart';
 import 'package:potato_center/ui/no_glow_scroll_behavior.dart';
+import 'package:potato_center/widget/device_info_card.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/current_build.dart';
@@ -171,33 +172,14 @@ class HomeScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ifUpdateWidget(SizedBox(height: 120, child: _updatesList)),
-          _paddedChild(ifUpdateWidget(_changelogCard())),
           _paddedChild(ifUpdateWidget(_divider)),
-          _paddedChild(_currentBuildCard()),
-          _paddedChild(ifUpdateWidget(
-            _noUpdatesText,
-            flipCondition: true,
-          )),
+          DeviceInfoCard(),
         ],
       );
 
   Widget _paddedChild(Widget child) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: child,
-      );
-
-  get _noUpdatesText => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Opacity(
-              opacity: 0.5,
-              child: Text("No updates here", style: TextStyle(fontSize: 20.0)),
-            ),
-            Text(" 🤷🏻‍♀️", style: TextStyle(fontSize: 20.0)),
-          ],
-        ),
       );
 
   get _updateHeaderText => Builder(
@@ -575,48 +557,6 @@ class HomeScreen extends StatelessWidget {
         },
       );
 
-  Widget _changelogCard() => Builder(
-        builder: (context) {
-          final _foregroundColor =
-              DefaultTextStyle.of(context).style.color.withOpacity(0.5);
-          return Card(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).dividerColor
-                : Theme.of(context).scaffoldBackgroundColor,
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: _kBorderRadius),
-            child: DefaultTextStyle(
-              style: TextStyle(color: _foregroundColor),
-              child: IconTheme(
-                data: Theme.of(context)
-                    .iconTheme
-                    .copyWith(color: _foregroundColor),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('Changelog & notes'),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12.0),
-                        child: GestureDetector(
-                          onTap: () =>
-                              launchUrl("https://potatoproject.co/changelog"),
-                          child: Icon(
-                            Icons.code,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      );
-
   Widget get _floatingActionButton => Builder(
         builder: (context) => FloatingActionButton(
           elevation: 0,
@@ -628,40 +568,6 @@ class HomeScreen extends StatelessWidget {
           onPressed: () async =>
               await Provider.of<DownloadProvider>(context).loadData(),
         ),
-      );
-
-  Widget _currentBuildCard() => Builder(
-        builder: (context) {
-          final currentBuild = Provider.of<CurrentBuildProvider>(context);
-          return Card(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Theme.of(context).dividerColor
-                : Theme.of(context).scaffoldBackgroundColor,
-            elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: _kBorderRadius),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      'Current build',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                  ),
-                  Text(
-                      '• Version - ${currentBuild.version} | ${currentBuild.type}'),
-                  Text(
-                      '• Device - ${currentBuild.device} | ${currentBuild.codename}'),
-                  Text('• Date - ${currentBuild.date}'),
-                ],
-              ),
-            ),
-          );
-        },
       );
 
   Widget get _bottomAppBar => Builder(builder: (context) {
