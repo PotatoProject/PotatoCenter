@@ -42,6 +42,8 @@ String formatStatus(String status) {
 
 int totalSizeInMb({String sizeStr}) {
   sizeStr ??= '0';
+  if (sizeStr == "") sizeStr = '0';
+
   return int.parse(sizeStr) ~/ (1024 * 1024);
 }
 
@@ -84,19 +86,21 @@ Future<void> setDark(bool dark) async {
   prefs.setBool('dark_theme', dark);
 }
 
-Widget ifUpdateWidget(Widget child, {bool flipCondition = false}) => Builder(
+Widget ifUpdateWidget(Widget child) => Builder(
       builder: (context) {
-        final downloadsLength =
-            Provider.of<DownloadProvider>(context)?.downloads?.length ?? 0;
-        return (flipCondition && downloadsLength <= 0) ||
-                (!flipCondition && downloadsLength > 0)
-            ? child
-            : Container();
+        final DownloadProvider downloadProvider =
+            Provider.of<DownloadProvider>(context);
+        final downloads = downloadProvider.downloads.where((download) =>
+            !(download.status == UpdateStatus.VERIFIED ||
+                download.status == UpdateStatus.DOWNLOADED));
+        final downloadsLength = downloads.length ?? 0;
+
+        return downloadsLength > 0 ? child : Container();
       },
     );
 
 dynamic getStatusInfo(DownloadProvider provider, bool returnIcon) {
-  if (provider.downloads.any((a) => a.status == UpdateStatus.DOWNLOADED))
+  if (provider.downloads.any((a) => a.status == UpdateStatus.VERIFIED))
     return (returnIcon ? MdiIcons.progressDownload : "Installation pending");
   else if (provider.downloads.length > 0 && provider.isUpdateAvailable)
     return (returnIcon ? MdiIcons.chevronDoubleUp : "Update available");
