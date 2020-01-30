@@ -1,3 +1,4 @@
+import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:potato_center/provider/current_build.dart';
@@ -44,9 +45,16 @@ class DeviceInfoCard extends StatelessWidget {
             ),
             Spacer(),
             IconButton(
-              icon: Icon(MdiIcons.informationOutline),
-              // TODO; Implement Settings activity startup
-              onPressed: () {},
+              icon: Icon(
+                MdiIcons.informationOutline,
+                color: Theme.of(context).accentColor,
+              ),
+              onPressed: () {
+                AndroidFlutterUpdater.startActivity(
+                  pkg: "com.android.settings",
+                  cls: "com.android.settings.Settings\$MyDeviceInfoActivity"
+                );
+              },
               padding: EdgeInsets.all(0),
             ),
           ],

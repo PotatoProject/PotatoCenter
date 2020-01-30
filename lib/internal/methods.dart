@@ -1,5 +1,6 @@
 import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:potato_center/models/download.dart';
 import 'package:potato_center/provider/download.dart';
 import 'package:provider/provider.dart';
@@ -82,3 +83,12 @@ Widget ifUpdateWidget(Widget child, {bool flipCondition = false}) => Builder(
             : Container();
       },
     );
+
+dynamic getStatusInfo(DownloadProvider provider, bool returnIcon) {
+  if (provider.downloads.any((a) => a.status == UpdateStatus.DOWNLOADED))
+    return (returnIcon ? MdiIcons.progressDownload : "Installation pending");
+  else if (provider.downloads.length > 0 && provider.isUpdateAvailable)
+    return (returnIcon ? MdiIcons.chevronDoubleUp : "Update available");
+  else
+    return (returnIcon ? MdiIcons.check : "You're up to date");
+}

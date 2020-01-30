@@ -12,6 +12,7 @@ import 'package:potato_center/ui/custom_bottom_sheet.dart';
 import 'package:potato_center/ui/custom_icons.dart';
 import 'package:potato_center/ui/no_glow_scroll_behavior.dart';
 import 'package:potato_center/widget/device_info_card.dart';
+import 'package:potato_center/widget/status_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/current_build.dart';
@@ -61,118 +62,30 @@ class PotatoCenterRoot extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appInfo = Provider.of<AppInfoProvider>(context);
-    if (appInfo.splashMode == 0) {
-      Future.delayed(Duration(seconds: 1), () => appInfo.splashMode = 1);
-      Future.delayed(Duration(seconds: 2), () => appInfo.splashMode = 2);
-    }
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          backgroundColor: Theme.of(context).cardColor,
-          appBar: null,
-          body: Stack(
-            children: <Widget>[
-              Positioned(
-                bottom: 24,
-                left: 24,
-                child: SizedBox(
-                  child: Icon(
-                    Logo.posp_logo,
-                    size: 28,
-                    color: Theme.of(context).iconTheme.color.withOpacity(0.05),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: SafeArea(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => SingleChildScrollView(
-                      padding: EdgeInsets.only(
-                        top: 32.0,
-                        bottom: 32.0 + _paddingForLogo(constraints),
-                      ),
-                      child: SizedBox(
-                        height: constraints.maxHeight <= 610
-                            ? constraints.maxHeight
-                            : constraints.maxHeight -
-                                (64 + _paddingForLogo(constraints)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            _updateHeaderText,
-                            _homeCards,
-                            Container(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          floatingActionButton: _floatingActionButton,
-          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-          bottomNavigationBar: _bottomAppBar,
-        ),
-        Visibility(
-          visible: appInfo.splashMode != 2,
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: null,
-            body: Stack(
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            StatusBar(),
+            ListView(
+              padding: EdgeInsets.only(top: 60),
               children: <Widget>[
-                AnimatedOpacity(
-                  duration: Duration(seconds: 1),
-                  opacity: appInfo.splashMode == 0 ? 1 : 0,
-                  curve: Curves.easeInOut,
-                  child: Container(
-                    decoration: new BoxDecoration(
-                      gradient: new LinearGradient(
-                        colors: [Color(0xFF4A00E0), Color(0xFF8E2DE2)],
-                        begin: FractionalOffset.topRight,
-                        end: FractionalOffset.bottomLeft,
-                        tileMode: TileMode.clamp,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: AnimatedOpacity(
-                      opacity: appInfo.splashMode == 0 ? 1 : 0,
-                      curve: Curves.easeInOut,
-                      duration: Duration(milliseconds: 300),
-                      child: Image.asset(
-                        "assets/posp.png",
-                        scale: 1.75,
-                      )),
-                ),
+                _homeCards
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
+      floatingActionButton: _floatingActionButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      bottomNavigationBar: _bottomAppBar,
     );
   }
-
-  double _paddingForLogo(constraints) => constraints.maxHeight <= 610 ? 12 : 0;
 
   Widget get _homeCards => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ifUpdateWidget(SizedBox(height: 120, child: _updatesList)),
-          _paddedChild(ifUpdateWidget(_divider)),
           DeviceInfoCard(),
         ],
       );
@@ -180,33 +93,6 @@ class HomeScreen extends StatelessWidget {
   Widget _paddedChild(Widget child) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: child,
-      );
-
-  get _updateHeaderText => Builder(
-        builder: (context) {
-          final downloadProvider = Provider.of<DownloadProvider>(context);
-          return Padding(
-            padding: const EdgeInsets.only(top: 32.0, left: 32.0, right: 32.0),
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: AnimatedOpacity(
-                duration: Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                opacity: downloadProvider.downloads.length > 0 &&
-                        downloadProvider.isUpdateAvailable
-                    ? 1.0
-                    : 0.25,
-                child: Text(
-                  downloadProvider.downloads.length > 0 &&
-                          downloadProvider.isUpdateAvailable
-                      ? 'Update\navailable!'
-                      : 'Up to date.',
-                  style: TextStyle(fontSize: 64),
-                ),
-              ),
-            ),
-          );
-        },
       );
 
   Widget get _divider => Builder(
