@@ -1,6 +1,5 @@
 import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:potato_center/provider/current_build.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +21,7 @@ class DeviceInfoCard extends StatelessWidget {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       margin: EdgeInsets.all(10),
+      elevation: 1.3,
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Row(

@@ -18,6 +18,26 @@ class BuildInfoCard extends StatelessWidget {
     this.latest = false,
   });
 
+  String get statusText {
+    //"Latest build"
+    if (download.status == UpdateStatus.DOWNLOADING ||
+        download.status == UpdateStatus.PAUSED_ERROR)
+      return "Downloading...";
+    else if (download.status == UpdateStatus.STARTING)
+      return "Starting download...";
+    else if (download.status == UpdateStatus.PAUSED)
+      return "Download paused";
+    else if (download.status == UpdateStatus.VERIFYING)
+      return "Verifying file...";
+    else if (download.status == UpdateStatus.VERIFICATION_FAILED)
+      return "Failed to verify";
+    else if (download.status == UpdateStatus.DOWNLOADED ||
+        download.status == UpdateStatus.VERIFIED)
+      return "Ready for installation";
+    else
+      return "Latest build";
+  }
+
   @override
   Widget build(BuildContext context) {
     String version = download.version;
@@ -28,6 +48,7 @@ class BuildInfoCard extends StatelessWidget {
     return Card(
       color: latest ? Theme.of(context).accentColor : null,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 1.3,
       margin: EdgeInsets.all(10),
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -38,11 +59,11 @@ class BuildInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Visibility(
-                  visible: latest,
+                  visible: latest && download.status != UpdateStatus.UNKNOWN,
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "Latest build",
+                        statusText,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -67,7 +88,11 @@ class BuildInfoCard extends StatelessWidget {
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
                             ? Colors.black.withOpacity(0.9)
                             : Colors.white.withOpacity(0.9)
-                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
+                        : Theme.of(context)
+                            .textTheme
+                            .title
+                            .color
+                            .withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -78,7 +103,11 @@ class BuildInfoCard extends StatelessWidget {
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
                             ? Colors.black.withOpacity(0.9)
                             : Colors.white.withOpacity(0.9)
-                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
+                        : Theme.of(context)
+                            .textTheme
+                            .title
+                            .color
+                            .withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -89,7 +118,11 @@ class BuildInfoCard extends StatelessWidget {
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
                             ? Colors.black.withOpacity(0.9)
                             : Colors.white.withOpacity(0.9)
-                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
+                        : Theme.of(context)
+                            .textTheme
+                            .title
+                            .color
+                            .withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -100,7 +133,11 @@ class BuildInfoCard extends StatelessWidget {
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
                             ? Colors.black.withOpacity(0.9)
                             : Colors.white.withOpacity(0.9)
-                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
+                        : Theme.of(context)
+                            .textTheme
+                            .title
+                            .color
+                            .withOpacity(0.7),
                   ),
                 ),
               ],
