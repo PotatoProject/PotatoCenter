@@ -7,6 +7,7 @@ import 'package:potato_center/provider/download.dart';
 import 'package:potato_center/provider/sheet_data.dart';
 import 'package:potato_center/ui/bottom_sheet.dart';
 import 'package:potato_center/ui/no_glow_scroll_behavior.dart';
+import 'package:potato_center/ui/themes.dart';
 import 'package:potato_center/widget/build_info_card.dart';
 import 'package:potato_center/widget/device_info_card.dart';
 import 'package:potato_center/widget/status_bar.dart';
@@ -55,14 +56,8 @@ class PotatoCenterRoot extends StatelessWidget {
               child: child,
             ),
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light().copyWith(
-                accentColor: appInfo.accentColor,
-                bottomSheetTheme: BottomSheetThemeData(
-                    backgroundColor: ThemeData.light().bottomAppBarColor)),
-            darkTheme: ThemeData.dark().copyWith(
-                accentColor: appInfo.accentColor,
-                bottomSheetTheme: BottomSheetThemeData(
-                    backgroundColor: ThemeData.dark().bottomAppBarColor)),
+            theme: Themes.light.copyWith(accentColor: appInfo.accentColor),
+            darkTheme: Themes.dark.copyWith(accentColor: appInfo.accentColor),
             home: HomeScreen(),
           );
         },
@@ -205,7 +200,10 @@ class HomeScreen extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Icon(
                                 Icons.menu,
-                                color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                                color: Theme.of(context)
+                                    .iconTheme
+                                    .color
+                                    .withOpacity(0.7),
                               ),
                             ),
                             Positioned(
@@ -221,7 +219,10 @@ class HomeScreen extends StatelessWidget {
                                     child: Icon(
                                       Icons.bug_report,
                                       size: 12,
-                                      color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                                      color: Theme.of(context)
+                                          .iconTheme
+                                          .color
+                                          .withOpacity(0.7),
                                     ),
                                   ),
                                 ),
@@ -255,7 +256,10 @@ class HomeScreen extends StatelessWidget {
                       IconButton(
                         icon: Icon(
                           MdiIcons.accountGroupOutline,
-                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                          color: Theme.of(context)
+                              .iconTheme
+                              .color
+                              .withOpacity(0.7),
                         ),
                         onPressed: () =>
                             launchUrl("https://potatoproject.co/team"),

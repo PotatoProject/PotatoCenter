@@ -49,7 +49,7 @@ class BuildInfoCard extends StatelessWidget {
       color: latest ? Theme.of(context).accentColor : null,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       elevation: 1.3,
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Row(
