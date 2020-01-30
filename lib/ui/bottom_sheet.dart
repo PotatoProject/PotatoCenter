@@ -79,21 +79,33 @@ class BottomSheetContents extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       IconButton(
-                        icon: Icon(Icons.code),
+                        icon: Icon(
+                          Icons.code,
+                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                        ),
                         onPressed: () =>
                             launchUrl('https://potatoproject.co/changelog'),
                       ),
                       IconButton(
-                        icon: Icon(Icons.public),
+                        icon: Icon(
+                          Icons.public,
+                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                        ),
                         onPressed: () => launchUrl('https://potatoproject.co'),
                       ),
                       IconButton(
-                        icon: Icon(MdiIcons.twitter),
+                        icon: Icon(
+                          MdiIcons.twitter,
+                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                        ),
                         onPressed: () =>
                             launchUrl('https://twitter.com/PotatoAndroid'),
                       ),
                       IconButton(
-                        icon: Icon(MdiIcons.telegram),
+                        icon: Icon(
+                          MdiIcons.telegram,
+                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                        ),
                         onPressed: () =>
                             launchUrl('https://t.me/SaucyPotatoesOfficial'),
                       ),
@@ -205,7 +217,8 @@ class _ChannelSelectorState extends State<ChannelSelector> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle _buttonTextStyle = TextStyle(color: Theme.of(context).accentColor);
+    TextStyle _buttonTextStyle =
+        TextStyle(color: Theme.of(context).accentColor);
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: _kBorderRadius,

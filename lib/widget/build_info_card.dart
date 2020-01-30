@@ -1,5 +1,6 @@
 import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:potato_center/internal/methods.dart';
 import 'package:potato_center/models/download.dart';
@@ -64,9 +65,9 @@ class BuildInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: latest
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
-                            ? Colors.black
-                            : Colors.white
-                        : null,
+                            ? Colors.black.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.9)
+                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -75,9 +76,9 @@ class BuildInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: latest
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
-                            ? Colors.black
-                            : Colors.white
-                        : null,
+                            ? Colors.black.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.9)
+                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -86,9 +87,9 @@ class BuildInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: latest
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
-                            ? Colors.black
-                            : Colors.white
-                        : null,
+                            ? Colors.black.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.9)
+                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
                   ),
                 ),
                 Divider(height: 4, color: Colors.transparent),
@@ -97,9 +98,9 @@ class BuildInfoCard extends StatelessWidget {
                   style: TextStyle(
                     color: latest
                         ? Theme.of(context).accentColor.computeLuminance() > 0.5
-                            ? Colors.black
-                            : Colors.white
-                        : null,
+                            ? Colors.black.withOpacity(0.9)
+                            : Colors.white.withOpacity(0.9)
+                        : Theme.of(context).textTheme.title.color.withOpacity(0.7),
                   ),
                 ),
               ],
@@ -136,7 +137,7 @@ class BuildInfoCard extends StatelessWidget {
                   child: GestureDetector(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.delete),
+                      child: Icon(MdiIcons.deleteOutline),
                     ),
                     onTap: () => download.cancelAndDelete(),
                   ),
@@ -178,7 +179,7 @@ class BuildInfoCard extends StatelessWidget {
                   child: GestureDetector(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.perm_device_information),
+                      child: Icon(MdiIcons.cellphoneArrowDown),
                     ),
                     onTap: () {
                       final buttonTextColor = Theme.of(context).accentColor;
@@ -314,6 +315,10 @@ class BuildInfoCard extends StatelessWidget {
                           : download.startDownload();
                     },
                   ),
+                ),
+                VerticalDivider(
+                  color: Colors.transparent,
+                  width: 4,
                 ),
               ],
             ),

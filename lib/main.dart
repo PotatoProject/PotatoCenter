@@ -203,7 +203,10 @@ class HomeScreen extends StatelessWidget {
                           children: <Widget>[
                             Align(
                               alignment: Alignment.center,
-                              child: Icon(Icons.menu),
+                              child: Icon(
+                                Icons.menu,
+                                color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                              ),
                             ),
                             Positioned(
                               top: 6,
@@ -218,6 +221,7 @@ class HomeScreen extends StatelessWidget {
                                     child: Icon(
                                       Icons.bug_report,
                                       size: 12,
+                                      color: Theme.of(context).iconTheme.color.withOpacity(0.7),
                                     ),
                                   ),
                                 ),
@@ -249,7 +253,10 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(MdiIcons.accountGroupOutline),
+                        icon: Icon(
+                          MdiIcons.accountGroupOutline,
+                          color: Theme.of(context).iconTheme.color.withOpacity(0.7),
+                        ),
                         onPressed: () =>
                             launchUrl("https://potatoproject.co/team"),
                       ),

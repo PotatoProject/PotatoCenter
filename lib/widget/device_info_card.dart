@@ -31,29 +31,67 @@ class DeviceInfoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text("Current build info",
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context)
+                          .textTheme
+                          .title
+                          .color
+                          .withOpacity(0.7),
+                    )),
                 Divider(height: 8, color: Colors.transparent),
-                Text("- Version: $version"),
+                Text(
+                  "- Version: $version",
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .title
+                          .color
+                          .withOpacity(0.5)),
+                ),
                 Divider(height: 4, color: Colors.transparent),
-                Text("- Type: $type"),
+                Text(
+                  "- Type: $type",
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .title
+                          .color
+                          .withOpacity(0.5)),
+                ),
                 Divider(height: 4, color: Colors.transparent),
-                Text("- Device: $device ($codename)"),
+                Text(
+                  "- Device: $device ($codename)",
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .title
+                          .color
+                          .withOpacity(0.5)),
+                ),
                 Divider(height: 4, color: Colors.transparent),
-                Text("- Date: $date"),
+                Text(
+                  "- Date: $date",
+                  style: TextStyle(
+                      color: Theme.of(context)
+                          .textTheme
+                          .title
+                          .color
+                          .withOpacity(0.5)),
+                ),
               ],
             ),
             Spacer(),
             IconButton(
               icon: Icon(
-                MdiIcons.informationOutline,
+                Icons.perm_device_information,
                 color: Theme.of(context).accentColor,
               ),
               onPressed: () {
                 AndroidFlutterUpdater.startActivity(
-                  pkg: "com.android.settings",
-                  cls: "com.android.settings.Settings\$MyDeviceInfoActivity"
-                );
+                    pkg: "com.android.settings",
+                    cls: "com.android.settings.Settings\$MyDeviceInfoActivity");
               },
               padding: EdgeInsets.all(0),
             ),
