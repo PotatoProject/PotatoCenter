@@ -9,7 +9,6 @@ import 'package:potato_center/provider/download.dart';
 import 'package:potato_center/provider/sheet_data.dart';
 import 'package:potato_center/ui/bottom_sheet.dart';
 import 'package:potato_center/ui/custom_bottom_sheet.dart';
-import 'package:potato_center/ui/custom_icons.dart';
 import 'package:potato_center/ui/no_glow_scroll_behavior.dart';
 import 'package:potato_center/widget/device_info_card.dart';
 import 'package:potato_center/widget/status_bar.dart';
@@ -42,15 +41,27 @@ class PotatoCenterRoot extends StatelessWidget {
       child: Builder(
         builder: (context) {
           final appInfo = Provider.of<AppInfoProvider>(context);
+
+          switch (appInfo.systemBrightness) {
+            case Brightness.light:
+              changeSystemBarsColors(
+                  ThemeData.light().bottomAppBarColor, Brightness.dark);
+              break;
+            case Brightness.dark:
+              changeSystemBarsColors(
+                  ThemeData.dark().bottomAppBarColor, Brightness.light);
+              break;
+          }
+
           return MaterialApp(
             builder: (context, child) => ScrollConfiguration(
               behavior: NoGlowScrollBehavior(),
               child: child,
             ),
             debugShowCheckedModeBanner: false,
-            theme: appInfo.isDark
-                ? ThemeData.dark().copyWith(accentColor: appInfo.accentColor)
-                : ThemeData.light().copyWith(accentColor: appInfo.accentColor),
+            theme: ThemeData.light().copyWith(accentColor: appInfo.accentColor),
+            darkTheme:
+                ThemeData.dark().copyWith(accentColor: appInfo.accentColor),
             home: HomeScreen(),
           );
         },
@@ -60,22 +71,33 @@ class PotatoCenterRoot extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  void updateColors(BuildContext context) async {
+    final appInfo = Provider.of<AppInfoProvider>(context);
+
+    appInfo.systemBrightness = await AndroidFlutterUpdater.isCurrentThemeDark()
+        ? Brightness.dark
+        : Brightness.light;
+
+    appInfo.updateMainColor();
+  }
+
   @override
   Widget build(BuildContext context) {
+    updateColors(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            StatusBar(),
-            ListView(
-              padding: EdgeInsets.only(top: 60),
-              children: <Widget>[
-                _homeCards
-              ],
-            ),
-          ],
-        ),
+      body: Stack(
+        children: <Widget>[
+          Positioned(
+            top: MediaQuery.of(context).padding.top,
+            child: StatusBar(),
+          ),
+          ListView(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 60),
+            children: <Widget>[_homeCards],
+          ),
+        ],
       ),
       floatingActionButton: _floatingActionButton,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

@@ -1,11 +1,22 @@
 import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:potato_center/models/download.dart';
 import 'package:potato_center/provider/download.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+void changeSystemBarsColors(
+    Color navBarColor, Brightness systemBarsIconBrightness) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: navBarColor,
+    systemNavigationBarIconBrightness: systemBarsIconBrightness,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: systemBarsIconBrightness,
+  ));
+}
 
 dynamic strToStatusEnum(String value) {
   return UpdateStatus.values.firstWhere(

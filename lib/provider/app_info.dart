@@ -11,12 +11,15 @@ class AppInfoProvider extends ChangeNotifier {
     loadData();
   }
 
+  Brightness _systemBrightness = Brightness.light;
   bool _isDark = false;
   bool _isDeveloper = false;
   Color _accentColor = Colors.blue;
   int _splashMode = 0;
   int _devCounter = 0;
   PermissionStatus _storageStatus;
+
+  Brightness get systemBrightness => _systemBrightness;
 
   bool get isDark => _isDark;
 
@@ -29,6 +32,11 @@ class AppInfoProvider extends ChangeNotifier {
   PermissionStatus get storageStatus => _storageStatus;
 
   get accentColor => _accentColor;
+
+  set systemBrightness(Brightness newBrightness) {
+    _systemBrightness = newBrightness;
+    notifyListeners();
+  }
 
   set isDark(bool val) {
     _isDark = val;
@@ -66,10 +74,21 @@ class AppInfoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateMainColor() async {
+    int sysAccent = systemBrightness == Brightness.dark
+        ? await AndroidFlutterUpdater.getDarkAccentColor()
+        : await AndroidFlutterUpdater.getLightAccentColor();
+
+    accentColor = Color(sysAccent);
+  }
+
   Future<void> loadData() async {
+    systemBrightness = await AndroidFlutterUpdater.isCurrentThemeDark()
+        ? Brightness.dark
+        : Brightness.light;
     isDark = await getDark();
     isDeveloper = await getDeveloperMode();
-    accentColor = Color(await AndroidFlutterUpdater.getAccentColor());
+    updateMainColor();
     storageStatus = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.storage);
   }
