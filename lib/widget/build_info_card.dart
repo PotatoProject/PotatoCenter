@@ -75,6 +75,7 @@ class BuildInfoCard extends StatelessWidget {
                                   ? Colors.black
                                   : Colors.white
                               : null,
+                          fontFamily: "GoogleSans",
                         ),
                       ),
                       Divider(height: 8, color: Colors.transparent),

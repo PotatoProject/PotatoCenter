@@ -29,6 +29,7 @@ class StatusBar extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 22,
               color: Theme.of(context).accentColor,
+              fontFamily: "GoogleSans",
             ),
           ),
         ],

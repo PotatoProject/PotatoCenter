@@ -39,6 +39,7 @@ class DeviceInfoCard extends StatelessWidget {
                           .title
                           .color
                           .withOpacity(0.7),
+                      fontFamily: "GoogleSans",
                     )),
                 Divider(height: 8, color: Colors.transparent),
                 Text(
