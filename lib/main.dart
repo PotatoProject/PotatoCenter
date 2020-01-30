@@ -192,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         height: 48,
-                        width: 48,
+                        width: 64,
                         child: Stack(
                           alignment: Alignment.center,
                           children: <Widget>[
@@ -208,7 +208,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Positioned(
                               top: 6,
-                              right: 6,
+                              right: 14,
                               child: Visibility(
                                 visible: appInfo.isDeveloper,
                                 child: Material(
@@ -241,6 +241,7 @@ class HomeScreen extends StatelessWidget {
                               },
                               child: IconButton(
                                 icon: Container(),
+                                padding: EdgeInsets.symmetric(horizontal: 16),
                                 onPressed: () {
                                   showModalBottomSheet(
                                     isScrollControlled: true,
