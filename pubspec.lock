@@ -4,11 +4,9 @@ packages:
   android_flutter_updater:
     dependency: "direct main"
     description:
-      path: "."
-      ref: croquette-release
-      resolved-ref: dff75b244835eec0522f9dc1ef5cf93d69d27df8
-      url: "git://github.com/AgentFabulous/android_flutter_updater"
-    source: git
+      path: "/home/hrx/android_flutter_updater"
+      relative: false
+    source: path
     version: "2.0.2+4"
   archive:
     dependency: transitive
