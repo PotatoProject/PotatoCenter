@@ -20,145 +20,98 @@ class BottomSheetContents extends StatelessWidget {
   ];
 
   final List<int> intervalIndex = [0, 1, 2, 3];
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final appInfo = Provider.of<AppInfoProvider>(context);
     final sheetData = Provider.of<SheetDataProvider>(context);
-    final foregroundColor = HSLColor.fromColor(Theme.of(context).accentColor)
-        .withLightness(0.85)
-        .toColor();
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        sheetData.isHandleVisible = false;
-      }
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.forward) {
-        sheetData.isHandleVisible = true;
-      }
-    });
 
     return Theme(
       data: Theme.of(context).copyWith(
-        toggleableActiveColor: Theme.of(context).brightness == Brightness.dark
-            ? foregroundColor
-            : Theme.of(context).accentColor,
+        toggleableActiveColor: Theme.of(context).accentColor,
       ),
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SingleChildScrollView(
-            controller: _scrollController,
-            padding: const EdgeInsets.only(top: 40),
-            child: Column(children: <Widget>[
-              ListTile(
-                title: Text('Update check interval'),
-                trailing: DropdownButton(
-                  value: sheetData.checkInterval,
-                  items: intervalIndex
-                      .map((int val) => DropdownMenuItem(
-                            value: val,
-                            child: Text(intervals[val]),
-                          ))
-                      .toList(),
-                  onChanged: (v) => sheetData.checkInterval = v,
-                ),
-              ),
-              ListTile(
-                title: Text('Mobile data warning'),
-                trailing: Switch(
-                  value: sheetData.dataWarn,
-                  onChanged: (v) => sheetData.dataWarn = v,
-                ),
-              ),
-              ListTile(
-                  title: Text('Delete updates when installed'),
-                  trailing: Switch(
-                    value: sheetData.autoDelete,
-                    onChanged: (v) => sheetData.autoDelete = v,
-                  )),
-              sheetData.isABDevice
-                  ? ListTile(
-                      title: Text('Install updates faster'),
-                      trailing: Switch(
-                          value: sheetData.perfMode,
-                          onChanged: (v) => sheetData.perfMode = v),
-                    )
-                  : Container(),
-              Divider(),
-              ifUpdateWidget(
-                ListTile(
-                  onTap: () => launchUrl('https://potatoproject.co/changelog'),
-                  title: Text('Changelog'),
-                  trailing: Icon(Icons.code),
-                ),
-                flipCondition: true,
-              ),
-              ListTile(
-                onTap: () => launchUrl('https://potatoproject.co'),
-                title: Text('Website'),
-                trailing: Icon(Icons.public),
-              ),
-              ListTile(
-                onTap: () => launchUrl('https://twitter.com/PotatoAndroid'),
-                title: Text('Twitter'),
-                trailing: Icon(MdiIcons.twitter),
-              ),
-              ListTile(
-                onTap: () => launchUrl('https://t.me/SaucyPotatoesOfficial'),
-                title: Text('Telegram'),
-                trailing: Icon(MdiIcons.telegram),
-              )
-            ]),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                if (_scrollController.offset != 0) {
-                  _scrollController.animateTo(
-                    0,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                  sheetData.isHandleVisible = true;
-                } else {
-                  if (!appInfo.isDeveloper) {
-                    appInfo.devCounter++;
-                    if (appInfo.isDeveloper) Navigator.of(context).pop();
-                  }
-                }
-              },
-              onLongPress: () {
-                appInfo.isDeveloper = false;
-                Navigator.of(context).pop();
-              },
-              child: AnimatedOpacity(
-                opacity: sheetData.isHandleVisible ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                child: Container(
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Center(
-                      child: Container(
-                        height: 5,
-                        width: 75,
-                        decoration: BoxDecoration(
-                          color: foregroundColor,
-                          borderRadius: BorderRadius.circular(2.5),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+          ListTile(
+            title: Text('Update check interval'),
+            trailing: DropdownButton(
+              value: sheetData.checkInterval,
+              items: intervalIndex
+                  .map((int val) => DropdownMenuItem(
+                        value: val,
+                        child: Text(intervals[val]),
+                      ))
+                  .toList(),
+              onChanged: (v) => sheetData.checkInterval = v,
             ),
           ),
+          ListTile(
+            title: Text('Mobile data warning'),
+            trailing: Switch(
+              value: sheetData.dataWarn,
+              onChanged: (v) => sheetData.dataWarn = v,
+            ),
+          ),
+          ListTile(
+              title: Text('Delete updates when installed'),
+              trailing: Switch(
+                value: sheetData.autoDelete,
+                onChanged: (v) => sheetData.autoDelete = v,
+              )),
+          sheetData.isABDevice
+              ? ListTile(
+                  title: Text('Install updates faster'),
+                  trailing: Switch(
+                      value: sheetData.perfMode,
+                      onChanged: (v) => sheetData.perfMode = v),
+                )
+              : Container(),
+          Divider(
+            height: 1,
+          ),
+          Container(
+              height: 64,
+              width: MediaQuery.of(context).size.width,
+              child: PageView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.code),
+                        onPressed: () =>
+                            launchUrl('https://potatoproject.co/changelog'),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.public),
+                        onPressed: () => launchUrl('https://potatoproject.co'),
+                      ),
+                      IconButton(
+                        icon: Icon(MdiIcons.twitter),
+                        onPressed: () =>
+                            launchUrl('https://twitter.com/PotatoAndroid'),
+                      ),
+                      IconButton(
+                        icon: Icon(MdiIcons.telegram),
+                        onPressed: () =>
+                            launchUrl('https://t.me/SaucyPotatoesOfficial'),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: IconButton(
+                      icon: Icon(Icons.device_unknown),
+                      onPressed: () {
+                        if (!appInfo.isDeveloper) {
+                          appInfo.devCounter++;
+                          if (appInfo.isDeveloper) Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );
@@ -173,138 +126,56 @@ class DeveloperBottomSheetContents extends StatefulWidget {
 
 class _DeveloperBottomSheetContentsState
     extends State<DeveloperBottomSheetContents> {
-  final key = GlobalKey();
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () {
-      final sheetData = Provider.of<SheetDataProvider>(context);
-      _scrollController.addListener(() {
-        if (_scrollController.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-          sheetData.isHandleVisible = false;
-        }
-        if (_scrollController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          sheetData.isHandleVisible = true;
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final appInfo = Provider.of<AppInfoProvider>(context);
-    final sheetData = Provider.of<SheetDataProvider>(context);
-    final backgroundColor = HSLColor.fromColor(Theme.of(context).accentColor)
-        .withLightness(0.85)
-        .toColor();
-    final foregroundColor = HSLColor.fromColor(Theme.of(context).accentColor)
-        .withLightness(0.4)
-        .toColor();
+
     return Theme(
       data: Theme.of(context).copyWith(
-        toggleableActiveColor: Theme.of(context).brightness == Brightness.dark
-            ? backgroundColor
-            : Theme.of(context).accentColor,
+        toggleableActiveColor: Theme.of(context).accentColor,
       ),
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 40),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Column(children: <Widget>[
-                  FutureBuilder(
-                    key: key,
-                    initialData: '',
-                    future: AndroidFlutterUpdater.getReleaseType(),
-                    builder: (context, snapshot) => ListTile(
-                      title: Text('Update channel'),
-                      subtitle: Text('Current: ${snapshot.data}'),
-                      trailing: RaisedButton(
-                        color: backgroundColor,
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => ChannelSelector(),
-                        ),
-                        child: Text(
-                          'Change',
-                          style: TextStyle(color: foregroundColor),
-                        ),
-                      ),
-                    ),
+          FutureBuilder(
+            initialData: 'unknown',
+            future: AndroidFlutterUpdater.getReleaseType(),
+            builder: (context, snapshot) => ListTile(
+              title: Text('Update channel'),
+              subtitle: Text('Current: ${snapshot.data}'),
+              trailing: RaisedButton(
+                color: Theme.of(context).accentColor,
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => ChannelSelector(
+                    currentChannel: snapshot.data,
                   ),
-                  ListTile(
-                    title: Text('Build verification'),
-                    trailing: FutureBuilder(
-                      initialData: true,
-                      future: AndroidFlutterUpdater.getVerify(),
-                      builder: (context, snapshot) => Switch(
-                        value: snapshot.data,
-                        onChanged: (b) => AndroidFlutterUpdater.setVerify(b)
-                            .then((v) => setState(() {})),
-                      ),
-                    ),
-                  ),
-                ]),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () {
-                if (_scrollController.offset != 0) {
-                  _scrollController.animateTo(
-                    0,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                  sheetData.isHandleVisible = true;
-                } else {
-                  if (!appInfo.isDeveloper) {
-                    appInfo.devCounter++;
-                    if (appInfo.isDeveloper) Navigator.of(context).pop();
-                  }
-                }
-              },
-              onLongPress: () {
-                appInfo.isDeveloper = false;
-                Navigator.of(context).pop();
-              },
-              child: AnimatedOpacity(
-                opacity: sheetData.isHandleVisible ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                child: Container(
-                  color: Colors.transparent,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Center(
-                      child: Container(
-                        height: 5,
-                        width: 75,
-                        decoration: BoxDecoration(
-                          color: backgroundColor,
-                          borderRadius: BorderRadius.circular(2.5),
-                        ),
-                      ),
-                    ),
-                  ),
+                ),
+                child: Text(
+                  'Change',
+                  style: TextStyle(color: Theme.of(context).bottomAppBarColor),
                 ),
               ),
             ),
+          ),
+          ListTile(
+            title: Text('Build verification'),
+            trailing: FutureBuilder(
+              initialData: true,
+              future: AndroidFlutterUpdater.getVerify(),
+              builder: (context, snapshot) => Switch(
+                value: snapshot.data,
+                onChanged: (b) => AndroidFlutterUpdater.setVerify(b)
+                    .then((v) => setState(() {})),
+              ),
+            ),
+          ),
+          ListTile(
+            title: Text('Remove debug menu'),
+            onTap: () {
+              appInfo.isDeveloper = false;
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
@@ -313,6 +184,10 @@ class _DeveloperBottomSheetContentsState
 }
 
 class ChannelSelector extends StatefulWidget {
+  final String currentChannel;
+
+  ChannelSelector({this.currentChannel});
+
   @override
   _ChannelSelectorState createState() => _ChannelSelectorState();
 }
@@ -320,14 +195,17 @@ class ChannelSelector extends StatefulWidget {
 class _ChannelSelectorState extends State<ChannelSelector> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.currentChannel ?? "");
+  }
 
   @override
   Widget build(BuildContext context) {
-    final foregroundColor = HSLColor.fromColor(Theme.of(context).accentColor)
-        .withLightness(0.4)
-        .toColor();
-    TextStyle _buttonTextStyle = TextStyle(color: foregroundColor);
+    TextStyle _buttonTextStyle = TextStyle(color: Theme.of(context).accentColor);
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: _kBorderRadius,

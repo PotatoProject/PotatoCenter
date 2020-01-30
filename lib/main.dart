@@ -59,9 +59,14 @@ class PotatoCenterRoot extends StatelessWidget {
               child: child,
             ),
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.light().copyWith(accentColor: appInfo.accentColor),
-            darkTheme:
-                ThemeData.dark().copyWith(accentColor: appInfo.accentColor),
+            theme: ThemeData.light().copyWith(
+                accentColor: appInfo.accentColor,
+                bottomSheetTheme: BottomSheetThemeData(
+                    backgroundColor: ThemeData.light().bottomAppBarColor)),
+            darkTheme: ThemeData.dark().copyWith(
+                accentColor: appInfo.accentColor,
+                bottomSheetTheme: BottomSheetThemeData(
+                    backgroundColor: ThemeData.dark().bottomAppBarColor)),
             home: HomeScreen(),
           );
         },
@@ -94,7 +99,8 @@ class HomeScreen extends StatelessWidget {
             child: StatusBar(),
           ),
           ListView(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 60),
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).padding.top + 60),
             children: <Widget>[_homeCards],
           ),
         ],
@@ -479,11 +485,10 @@ class HomeScreen extends StatelessWidget {
       );
 
   Widget get _bottomAppBar => Builder(builder: (context) {
-        final sheetData = Provider.of<SheetDataProvider>(context);
+        final appInfo = Provider.of<AppInfoProvider>(context);
 
         return Container(
           height: 60,
-          padding: EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
               color: Theme.of(context).bottomAppBarColor,
               boxShadow: [
@@ -495,34 +500,72 @@ class HomeScreen extends StatelessWidget {
                 )
               ]),
           child: Material(
-            color: Colors.transparent,
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    if (!sheetData.isHandleVisible)
-                      sheetData.isHandleVisible = true;
-
-                    showModalBottomSheetApp(
-                      dismissOnTap: false,
-                      context: context,
-                      builder: (context) => BottomSheetContents(),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
+              color: Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      height: 48,
+                      width: 48,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.center,
+                            child: Icon(Icons.menu),
+                          ),
+                          Positioned(
+                            top: 6,
+                            right: 6,
+                            child: Visibility(
+                              visible: appInfo.isDeveloper,
+                              child: Material(
+                                color: Theme.of(context).bottomAppBarColor,
+                                borderRadius: BorderRadius.circular(16),
+                                child: Padding(
+                                  padding: EdgeInsets.all(2),
+                                  child: Icon(
+                                    Icons.bug_report,
+                                    size: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onLongPress: () {
+                              if (appInfo.isDeveloper) {
+                                showModalBottomSheet(
+                                  isScrollControlled: false,
+                                  context: context,
+                                  builder: (context) =>
+                                      DeveloperBottomSheetContents(),
+                                );
+                              }
+                            },
+                            child: IconButton(
+                              icon: Container(),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) => BottomSheetContents(),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                    );
-                  },
+                    ),
+                    IconButton(
+                      icon: Icon(MdiIcons.accountGroupOutline),
+                      onPressed: () =>
+                          launchUrl("https://potatoproject.co/team"),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(MdiIcons.accountGroupOutline),
-                  onPressed: () => launchUrl("https://potatoproject.co/team"),
-                ),
-              ],
-            ),
-          ),
+              )),
         );
       });
 
