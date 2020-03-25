@@ -89,7 +89,7 @@ class BottomSheetContents extends StatelessWidget {
               Divider(),
               ifUpdateWidget(
                 ListTile(
-                  onTap: () => launchUrl('https://potatoproject.co/changelog'),
+                  onTap: () => launchUrl('https://potatoproject.co/#changelog'),
                   title: Text('Changelog'),
                   trailing: Icon(Icons.code),
                 ),

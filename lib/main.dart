@@ -601,7 +601,7 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 12.0),
                         child: GestureDetector(
                           onTap: () =>
-                              launchUrl("https://potatoproject.co/changelog"),
+                              launchUrl("https://potatoproject.co/#changelog"),
                           child: Icon(
                             Icons.code,
                             size: 20,
@@ -699,7 +699,7 @@ class HomeScreen extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.person),
                       onPressed: () =>
-                          launchUrl("https://potatoproject.co/team"),
+                          launchUrl("https://potatoproject.co/#team"),
                     ),
                     Spacer(flex: 4),
                     AnimatedCrossFade(
