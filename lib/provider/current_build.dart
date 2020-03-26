@@ -2,7 +2,6 @@ import 'package:android_flutter_updater/android_flutter_updater.dart';
 import 'package:flutter/foundation.dart';
 
 class CurrentBuildProvider extends ChangeNotifier {
-
   CurrentBuildProvider() {
     loadData();
   }

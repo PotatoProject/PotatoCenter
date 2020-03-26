@@ -65,6 +65,5 @@ class SheetDataProvider extends ChangeNotifier {
     autoDelete = await AndroidFlutterUpdater.getAutoDelete();
     isABDevice = await AndroidFlutterUpdater.isABDevice();
     perfMode = await AndroidFlutterUpdater.getPerformanceMode();
-
   }
 }

@@ -422,15 +422,16 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                   ),
-                ),Visibility(
+                ),
+                Visibility(
                   visible: (download.status != UpdateStatus.DOWNLOADING &&
-                      download.status != UpdateStatus.DOWNLOADED &&
-                      download.status != UpdateStatus.STARTING &&
-                      download.status != UpdateStatus.VERIFYING &&
-                      download.status != UpdateStatus.VERIFIED &&
-                      download.status != UpdateStatus.INSTALLING &&
-                      download.status != UpdateStatus.INSTALLED &&
-                      download.status != UpdateStatus.PAUSED) &&
+                          download.status != UpdateStatus.DOWNLOADED &&
+                          download.status != UpdateStatus.STARTING &&
+                          download.status != UpdateStatus.VERIFYING &&
+                          download.status != UpdateStatus.VERIFIED &&
+                          download.status != UpdateStatus.INSTALLING &&
+                          download.status != UpdateStatus.INSTALLED &&
+                          download.status != UpdateStatus.PAUSED) &&
                       download.notes != "",
                   child: GestureDetector(
                     child: Padding(
@@ -443,24 +444,23 @@ class HomeScreen extends StatelessWidget {
                               .withLightness(0.4)
                               .toColor();
                       showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text("Notes for release"),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: _kBorderRadius,
-                            ),
-                            content: Text(download.notes),
-                            actions: <Widget>[
-                              FlatButton(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Notes for release"),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: _kBorderRadius,
+                          ),
+                          content: Text(download.notes),
+                          actions: <Widget>[
+                            FlatButton(
                                 child: Text(
                                   "Close",
                                   style: TextStyle(color: buttonTextColor),
                                 ),
-                                onPressed: () => Navigator.of(context).pop()
-                              ),
-                            ],
-                          ),
-                        );
+                                onPressed: () => Navigator.of(context).pop()),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -691,8 +691,7 @@ class HomeScreen extends StatelessWidget {
                       icon: Icon(Icons.fastfood),
                       onPressed: () => AndroidFlutterUpdater.startActivity(
                         pkg: 'com.potatoproject.fries',
-                        cls:
-                            'com.potatoproject.fries.TopLevelSettingsActivity',
+                        cls: 'com.potatoproject.fries.TopLevelSettingsActivity',
                       ),
                     ),
                     Spacer(),
